@@ -1,10 +1,7 @@
-import { Store } from './components/store';
+import { RouterProvider } from 'react-router';
+import { router } from './routes';
 import '../styles/index.css';
 
 export default function App() {
-  return (
-    <div className="min-h-screen bg-slate-950">
-      <Store />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
