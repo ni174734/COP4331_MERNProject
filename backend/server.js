@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+
 var cardList = 
 [
   'Roy Campanella',
@@ -107,6 +109,10 @@ const app = express();
 app.use(cors());
 // app.use(bodyParser.json());
 app.use(express.json());
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("Successfully connected to MongoDB!"))
+  .catch((err) => console.log("MongoDB connection error: ", err));
 
 app.post('/api/addcard', async (req, res, next) =>
 {
