@@ -1,2 +1,2 @@
 # COP4331_MERNProject
-Base branch that project started on
+Backup Branch for functional versions of program
