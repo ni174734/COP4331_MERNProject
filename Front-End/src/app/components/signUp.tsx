@@ -13,7 +13,6 @@ export function SignUp() {
     e.preventDefault();
     setError("");
 
-    // Basic validation
     if (!email || !password || !username) {
       setError("Please fill in all fields");
       return;
@@ -30,32 +29,33 @@ export function SignUp() {
     }
 
     try {
-      const res = await fetch("/api/signup", {
+      const response = await fetch("/api/signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ username, email, password }),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Registration failed. Please try again.");
+
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        setError(data.error || "Sign up failed");
         return;
       }
-    } catch {
-      setError("Could not connect to the server. Please try again.");
-      return;
+
+      sessionStorage.setItem("pendingEmail", email);
+      navigate("/verify-email");
+    } catch (err) {
+      setError("Could not connect to server");
     }
-
-    // Store email in sessionStorage for verification page
-    sessionStorage.setItem("pendingEmail", email);
-
-    // Navigate to verification page
-    navigate("/verify-email");
   };
+  
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-gradient-to-br from-orange-900/20 via-black to-black" />
-      
+
       <div className="relative w-full max-w-md">
         {/* Back button */}
         <button

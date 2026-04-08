@@ -23,28 +23,31 @@ export function Login() {
     }
 
     try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        const response = await fetch("/api/login", {        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ email, password }),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Login failed. Please try again.");
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Login failed");
         return;
       }
-    } catch {
-      setError("Could not connect to the server. Please try again.");
-      return;
-    }
 
-    navigate("/");
+      localStorage.setItem("user_data", JSON.stringify(data.user));
+      navigate("/");
+    } catch (err) {
+      setError("Could not connect to server");
+    }
   };
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-gradient-to-br from-orange-900/20 via-black to-black" />
-      
+
       <div className="relative w-full max-w-md">
         {/* Back button */}
         <button
