@@ -8,7 +8,7 @@ export function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -22,7 +22,22 @@ export function Login() {
       return;
     }
 
-    // For demo purposes, accept any credentials
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Login failed. Please try again.");
+        return;
+      }
+    } catch {
+      setError("Could not connect to the server. Please try again.");
+      return;
+    }
+
     navigate("/");
   };
 

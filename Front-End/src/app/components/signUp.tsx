@@ -9,7 +9,7 @@ export function SignUp() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -29,9 +29,25 @@ export function SignUp() {
       return;
     }
 
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Registration failed. Please try again.");
+        return;
+      }
+    } catch {
+      setError("Could not connect to the server. Please try again.");
+      return;
+    }
+
     // Store email in sessionStorage for verification page
     sessionStorage.setItem("pendingEmail", email);
-    
+
     // Navigate to verification page
     navigate("/verify-email");
   };
