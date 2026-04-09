@@ -18,9 +18,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  gamesLibrary: [{
+  gamesLibrary: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Game'
+  },
+  isVerified: [{ 
+    type: Boolean, default: false 
   }]
 }, { timestamps: true });
 
