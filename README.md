@@ -1,2 +1,2 @@
 # COP4331_MERNProject
-test commit
+Main stable branch for the citrus market MERN project
